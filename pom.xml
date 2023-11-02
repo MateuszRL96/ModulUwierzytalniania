@@ -47,10 +47,23 @@
     </dependency>
 
     <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.5.7.Final</version> <!-- Lub inna odpowiednia wersja -->
+  </dependency>
+  
+
+    <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>javax.persistence-api</artifactId>
       <version>2.2</version> <!-- Lub inna odpowiednia wersja -->
   </dependency>
+
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
 
 	<!-- tag::devTools[] -->
     <dependency>
@@ -71,6 +84,14 @@
       <artifactId>htmlunit-driver</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- posgresql-->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.5.4</version> <!-- Lub inna odpowiednia wersja -->
+  </dependency>
+  
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
