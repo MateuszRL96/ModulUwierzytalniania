@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Setter
 @NoArgsConstructor
-@Table
+@Table(name = "users")
 @Entity
 public class User implements UserDetails{
 
