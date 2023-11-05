@@ -18,6 +18,8 @@ public class JwtService {
 
     public static final String SECRET ="D57850710EC3353E2175133A6A347E6615740739DF14E40E7F4C63C550854380";
 
+
+
     public void validateToken(final String token)
     {
         Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
@@ -44,5 +46,6 @@ public class JwtService {
         .setExpiration(new Date(System.currentTimeMillis()+ 1000 *60 *30))
         .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
+
 
 }

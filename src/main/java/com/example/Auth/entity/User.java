@@ -17,12 +17,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Setter
-@NoArgsConstructor
 @Table(name = "users")
 @Entity
 public class User implements UserDetails{
@@ -92,6 +90,10 @@ public class User implements UserDetails{
         if(uuid == null || uuid.equals("")){
             setUuid(UUID.randomUUID().toString());
         }
+    }
+
+    public User(){
+        generateUuid();
     }
     
 }
