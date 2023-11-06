@@ -22,7 +22,7 @@ import lombok.Setter;
 
 
 @Setter
-@Table(name = "users")
+@Table(name = "user")
 @Entity
 public class User implements UserDetails{
 
@@ -103,6 +103,10 @@ public class User implements UserDetails{
 
     public String getEmail() {
         return email;
+    }
+
+    public Role getRole() {
+        return null;
     }
     
 }

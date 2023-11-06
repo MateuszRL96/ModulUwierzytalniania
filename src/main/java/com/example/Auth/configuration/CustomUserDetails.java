@@ -1,10 +1,13 @@
 package com.example.Auth.configuration;
 
 import java.util.Collection;
+//import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.Auth.entity.Role;
 import com.example.Auth.entity.User;
 
 public class CustomUserDetails  implements UserDetails
@@ -12,21 +15,25 @@ public class CustomUserDetails  implements UserDetails
 
     private String username;
     private String password;
+    private Role role;
 
     public CustomUserDetails(User user)
     {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.role = user.getRole();
     }
 
-    @Override
+     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        //return List.of(new SimpleGrantedAuthority(role.name()));\
         return null;
     }
 
 
+
     @Override
-    public String getPassword() {
+    public String getPassword() {//
         return password;
     }
 

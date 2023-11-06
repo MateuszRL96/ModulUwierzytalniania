@@ -2,11 +2,13 @@ package com.example.Auth.entity;
 
 import java.sql.Timestamp;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-
-@Data
-//@Builder
+@Setter
+@Builder
+@Getter
 public class AuthResponse {
     
 
@@ -15,7 +17,7 @@ public class AuthResponse {
     private Code code;
 
 
-    public AuthResponse(String timestamp, Code code) {
+    public AuthResponse(Code code) {
         this.timestamp = String.valueOf(new Timestamp(System.currentTimeMillis()));
         this.message = code.label;
         this.code = code;

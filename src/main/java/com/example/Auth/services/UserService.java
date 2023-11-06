@@ -3,7 +3,6 @@ package com.example.Auth.services;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,33 +23,50 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
-    private User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.saveAndFlush(user);
-    }
-
     private final JwtService jwtService;
-
+    private final AuthenticationManager authenticationManager;
     private final CookieService cookieService;
 
     private int exp = 240000;
 
     private int refreshExp = 240000;
 
-    private final AuthenticationManager authenticationManager;
+    private User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.saveAndFlush(user);
+    }
 
 
     public String generateToken(String username) {
         return jwtService.generateToken(username);
     }
 
+
     public void validateToken(String token)
     {
         jwtService.validateToken(token);
     }
+/* 
+    public void validateToken(HttpServletRequest request) throws ExpiredJwtException, IllegalArgumentException{
+        String token = null;
+        String refresh = null;
+        for (Cookie value : Arrays.stream(request.getCookies()).toList()) {
+            if (value.getName().equals("token")) {
+                token = value.getValue();
+            } else if (value.getName().equals("refresh")) {
+                refresh = value.getValue();
+            }
+        }
+        try {
+            jwtService.validateToken(token);
+        }catch (IllegalArgumentException | ExpiredJwtException e){
+            jwtService.validateToken(refresh);
+        }
+
+    }
+    */
+
 
     public void register(UserRegisterDTO userRegisterDTO) {
 
@@ -78,12 +94,12 @@ public class UserService {
 
         if(user != null)
         {
-            Authentication authenticate = (Authentication) authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-            if(((org.springframework.security.core.Authentication) authenticate).isAuthenticated())
+            org.springframework.security.core.Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            if (authenticate.isAuthenticated()) 
             {
-                Cookie cookie = cookieService.genereteCookie("token", generateToken(authRequest.getUsername()), exp);
+                
                 Cookie refresh = cookieService.genereteCookie("refresh", generateToken(authRequest.getUsername()), refreshExp);
+                Cookie cookie = cookieService.genereteCookie("token", generateToken(authRequest.getUsername()), exp);
                 response.addCookie(cookie);
                 response.addCookie(refresh);
                 return ResponseEntity.ok(
@@ -95,13 +111,15 @@ public class UserService {
             }
             else
             {
-                return ResponseEntity.ok(new AuthResponse(null, Code.A1));
+                return ResponseEntity.ok(new AuthResponse(Code.A1));
             }
         }
 
 
 
-        return ResponseEntity.ok(new AuthResponse(null, Code.A2));
+        return ResponseEntity.ok(new AuthResponse(Code.A2));
     }
 
 }
+
+

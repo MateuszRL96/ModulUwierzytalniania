@@ -1,9 +1,9 @@
 package com.example.Auth.entity;
 
 public enum Code {
-    SUCCESS("Operation succes"),
-    A1("Operation failed"),
-    A2("idlk");
+    SUCCESS("Operacja zakonczona sukcesem"),
+    A1("nie udalo sie zalogowac"),
+    A2("uzytkownik o podanej nazwie nie isnieje");
 
     public final String label;
 

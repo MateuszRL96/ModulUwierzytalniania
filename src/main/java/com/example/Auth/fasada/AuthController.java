@@ -28,16 +28,16 @@ public class AuthController {
     public ResponseEntity<AuthResponse> addNewUser(@RequestBody UserRegisterDTO user)
     {
         userService.register(user);
-        return ResponseEntity.ok(new AuthResponse(null, Code.SUCCESS));
+        return ResponseEntity.ok(new AuthResponse(Code.SUCCESS));
     }
     
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response)
-    {
-        return userService.login(response, user);
+    @RequestMapping(path = "/login",method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response){
+        return userService.login(response,user);
     }
 
 
+///
     
 }
