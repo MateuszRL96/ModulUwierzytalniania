@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,8 +27,8 @@ import lombok.Setter;
 public class User implements UserDetails{
 
     @Id
-    @GeneratedValue(generator = "user_id_seq", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "users_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     private long id;
     private String uuid;
     private String login;
@@ -35,7 +36,11 @@ public class User implements UserDetails{
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name= "islock")
     private boolean isLock;
+
+    @Column(name= "isenabled")
     private boolean isEnabled;
 
     public User(long id, String uuid, String login, String email, String password, Role role, boolean isLock,
@@ -94,6 +99,10 @@ public class User implements UserDetails{
 
     public User(){
         generateUuid();
+    }
+
+    public String getEmail() {
+        return email;
     }
     
 }
