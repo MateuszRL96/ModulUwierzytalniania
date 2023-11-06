@@ -1,4 +1,4 @@
-package com.example.Auth.services;
+package com.example.auth.services;
 
 import javax.servlet.http.Cookie;
 

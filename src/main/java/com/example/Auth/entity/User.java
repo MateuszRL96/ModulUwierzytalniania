@@ -1,4 +1,4 @@
-package com.example.Auth.entity;
+package com.example.auth.entity;
 
 import java.util.Collection;
 import java.util.List;

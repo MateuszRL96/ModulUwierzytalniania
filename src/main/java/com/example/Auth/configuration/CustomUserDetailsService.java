@@ -1,4 +1,4 @@
-package com.example.Auth.configuration;
+package com.example.auth.configuration;
 
 import java.util.Optional;
 
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.example.Auth.entity.User;
-import com.example.Auth.repository.UserRepository;
+import com.example.auth.entity.User;
+import com.example.auth.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

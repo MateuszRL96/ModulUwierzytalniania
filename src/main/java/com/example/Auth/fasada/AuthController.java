@@ -1,4 +1,4 @@
-package com.example.Auth.fasada;
+package com.example.auth.fasada;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Auth.entity.AuthResponse;
-import com.example.Auth.entity.Code;
-import com.example.Auth.entity.User;
-import com.example.Auth.entity.UserRegisterDTO;
-import com.example.Auth.services.UserService;
+import com.example.auth.entity.AuthResponse;
+import com.example.auth.entity.Code;
+import com.example.auth.entity.User;
+import com.example.auth.entity.UserRegisterDTO;
+import com.example.auth.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 

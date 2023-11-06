@@ -1,13 +1,11 @@
-package com.example.Auth.entity;
+package com.example.auth.entity;
 
 import java.sql.Timestamp;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
-@Builder
 @Getter
 public class AuthResponse {
     

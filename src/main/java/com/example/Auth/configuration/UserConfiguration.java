@@ -1,4 +1,4 @@
-package com.example.Auth.configuration;
+package com.example.auth.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.Auth.repository.UserRepository;
+import com.example.auth.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,9 +43,10 @@ public class UserConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
-        return http.csrf().disable()
+        return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
-                .antMatchers("/api/v1/auth/register").permitAll()
+                .antMatchers("/api/v1/auth/login").permitAll()
+               // .anyRequest().authenticated()
                 .and()
                 .build();
     }

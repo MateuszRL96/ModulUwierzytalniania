@@ -1,4 +1,4 @@
-package com.example.Auth.services;
+package com.example.auth.services;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -9,12 +9,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.Auth.entity.AuthResponse;
-import com.example.Auth.entity.Code;
-import com.example.Auth.entity.Role;
-import com.example.Auth.entity.User;
-import com.example.Auth.entity.UserRegisterDTO;
-import com.example.Auth.repository.UserRepository;
+import com.example.auth.entity.AuthResponse;
+import com.example.auth.entity.Code;
+import com.example.auth.entity.Role;
+import com.example.auth.entity.User;
+import com.example.auth.entity.UserRegisterDTO;
+import com.example.auth.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
