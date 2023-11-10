@@ -46,7 +46,7 @@ public class UserConfiguration {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/login").permitAll()
-               // .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .build();
     }
