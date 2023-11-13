@@ -6,12 +6,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.auth.repository.UserRepository;
 
@@ -40,17 +38,7 @@ public class UserConfiguration {
     }
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-    {
-        return http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests()
-                .antMatchers("/api/v1/auth/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .build();
-    }
-
+    
 
 
     @Bean
@@ -64,7 +52,17 @@ public class UserConfiguration {
         return config.getAuthenticationManager();
     }
 
+/*
+ * @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+    {
+        return http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->{
+            authorizationManagerRequestMatcherRegistry.antMatchers("/api/v1/auth/login").permitAll();
+            authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
+        }).build();
+    }
 
+ */
 
 
     
