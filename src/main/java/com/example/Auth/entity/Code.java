@@ -3,7 +3,8 @@ package com.example.auth.entity;
 public enum Code {
     SUCCESS("Operacja zakonczona sukcesem"),
     A1("nie udalo sie zalogowac"),
-    A2("uzytkownik o podanej nazwie nie isnieje");
+    A2("uzytkownik o podanej nazwie nie isnieje"),
+    PERMIT("jakis blad");
 
     public final String label;
 

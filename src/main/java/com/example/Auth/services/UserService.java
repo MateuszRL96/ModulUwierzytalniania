@@ -1,11 +1,16 @@
 package com.example.auth.services;
 
+import java.util.Arrays;
+
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +21,13 @@ import com.example.auth.entity.User;
 import com.example.auth.entity.UserRegisterDTO;
 import com.example.auth.repository.UserRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     
     private final UserRepository userRepository;
@@ -27,10 +35,11 @@ public class UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final CookieService cookieService;
+    @Value("${jwt.exp}")
+    private int exp;
+    @Value("${jwt.refresh.exp}")
+    private int refreshExp;
 
-    private int exp = 240000;
-
-    private int refreshExp = 240000;
 
     private User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -38,34 +47,36 @@ public class UserService {
     }
 
 
-    public String generateToken(String username) {
-        return jwtService.generateToken(username);
+    public String generateToken(String username, int exp) {
+        return jwtService.generateToken(username, exp);
     }
 
 
-    public void validateToken(String token)
-    {
-        jwtService.validateToken(token);
-    }
-/* 
+    
     public void validateToken(HttpServletRequest request) throws ExpiredJwtException, IllegalArgumentException{
         String token = null;
         String refresh = null;
-        for (Cookie value : Arrays.stream(request.getCookies()).toList()) {
-            if (value.getName().equals("token")) {
+        for (Cookie value : Arrays.stream(((HttpServletRequest) request).getCookies()).toList()) 
+        {
+            if (value.getName().equals("token")) 
+            {
                 token = value.getValue();
-            } else if (value.getName().equals("refresh")) {
+            } 
+            else if (value.getName().equals("refresh")) 
+            {
                 refresh = value.getValue();
             }
         }
-        try {
+        try 
+        {
             jwtService.validateToken(token);
-        }catch (IllegalArgumentException | ExpiredJwtException e){
+        }
+        catch (IllegalArgumentException | ExpiredJwtException e){
             jwtService.validateToken(refresh);
         }
 
     }
-    */
+    
 
 
     public void register(UserRegisterDTO userRegisterDTO) {
@@ -94,12 +105,12 @@ public class UserService {
 
         if(user != null)
         {
-            org.springframework.security.core.Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
             if (authenticate.isAuthenticated()) 
             {
                 
-                Cookie refresh = cookieService.genereteCookie("refresh", generateToken(authRequest.getUsername()), refreshExp);
-                Cookie cookie = cookieService.genereteCookie("token", generateToken(authRequest.getUsername()), exp);
+                Cookie refresh = cookieService.genereteCookie("refresh", generateToken(authRequest.getUsername(), refreshExp), refreshExp);
+                Cookie cookie = cookieService.genereteCookie("token", generateToken(authRequest.getUsername(), exp), exp);
                 response.addCookie(cookie);
                 response.addCookie(refresh);
                 return ResponseEntity.ok(

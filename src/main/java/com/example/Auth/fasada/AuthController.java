@@ -1,5 +1,6 @@
 package com.example.auth.fasada;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import com.example.auth.entity.User;
 import com.example.auth.entity.UserRegisterDTO;
 import com.example.auth.services.UserService;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -36,6 +38,19 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response){
         return userService.login(response,user);
         
+    }
+
+
+    @RequestMapping(path = "/validate", method = RequestMethod.GET)
+    public ResponseEntity<AuthResponse> validateToken(HttpServletRequest request)
+    {
+        try{
+            userService.validateToken(request);
+            return ResponseEntity.ok(new AuthResponse(Code.PERMIT));
+        }catch (IllegalArgumentException | ExpiredJwtException e)
+        {
+            return ResponseEntity.status(401).body(new AuthResponse(Code.A1));
+        }
     }
 
 

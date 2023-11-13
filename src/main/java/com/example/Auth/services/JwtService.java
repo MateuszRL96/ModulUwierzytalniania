@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -16,13 +17,19 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
     
 
-    public static final String SECRET ="D57850710EC3353E2175133A6A347E6615740739DF14E40E7F4C63C550854380";
-
+    public JwtService(@Value("${jwt.secret}") String secret){
+        SECRET = secret;
+    }
+    public final String SECRET;
 
 
     public void validateToken(final String token)
     {
-        Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
+        Jwts
+            .parserBuilder()
+            .setSigningKey(getSignKey())
+            .build()
+            .parseClaimsJws(token);
     }
 
     private Key getSignKey()
@@ -32,18 +39,18 @@ public class JwtService {
     }
 
 
-    public String generateToken(String username)
+    public String generateToken(String username, int exp)
     {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, username, exp);
     }
 
-    private String createToken(Map<String, Object> claims, String username) {
+    private String createToken(Map<String, Object> claims, String username, int exp) {
         return Jwts.builder()
         .setClaims(claims)
         .setSubject(username)
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis()+ 1000 *60 *30))
+        .setExpiration(new Date(System.currentTimeMillis()+ exp))
         .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
